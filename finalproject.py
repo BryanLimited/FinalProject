@@ -1,11 +1,15 @@
 #Authors: Bryan Soares & Elijah Avri
 
+#importing os
+import os
+
 
 #Importing pygame
 import pygame
 pygame.init()
 
-
+#setting root path for Python 
+RootPath = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 
 #Window screen setup 
 WindowScreen = pygame.display.set_mode((480,720))
@@ -13,6 +17,7 @@ pygame.display.set_caption("Bootleg Flappy")
 
 
 #Background Image Setup
+pygame.image.load(os.path.join(RootPath,'assets', 'SkyAsset.png'))
 Background = pygame.image.load(r'assets/SkyAsset.png')
 
 
