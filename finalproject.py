@@ -8,8 +8,12 @@ pygame.init()
 
 
 #Window screen setup 
-WindowScreen = pygame.display.set_mode((1980,1080))
+WindowScreen = pygame.display.set_mode((480,720))
 pygame.display.set_caption("Bootleg Flappy")
+
+
+#Background Image Setup
+Background = pygame.image.load('Background.png')
 
 
 
@@ -18,4 +22,9 @@ while running:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       running = False
+
+      WindowScreen.blit(Background, (0, 0))
+      
+      pygame.display.update()
+
 
