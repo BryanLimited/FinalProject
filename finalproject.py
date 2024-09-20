@@ -28,7 +28,6 @@ while running:
     if event.type == pygame.QUIT:
       running = False
 
-      WindowScreen.blit(Background, (0, 0))
       
       pygame.display.update()
 
