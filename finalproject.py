@@ -13,7 +13,7 @@ pygame.display.set_caption("Bootleg Flappy")
 
 
 #Background Image Setup
-Background = pygame.image.load('assets/SkyAsset.png')
+Background = pygame.image.load(r'assets/SkyAsset.png')
 
 
 
