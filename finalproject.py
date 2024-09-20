@@ -9,7 +9,7 @@ import pygame
 pygame.init()
 
 #setting root path for Python 
-RootPath = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+RootPath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'FinalProject-main.zip')
 #Window screen setup 
 WindowScreen = pygame.display.set_mode((480,720))
 pygame.display.set_caption("Bootleg Flappy")
