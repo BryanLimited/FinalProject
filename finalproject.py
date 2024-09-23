@@ -16,7 +16,7 @@ pygame.display.set_caption("Bootleg Flappy")
 
 
 #Background Image Setup
-Background = pygame.image.load(os.path.join(RootPath,'assets', 'SkyAsset.png'))
+Background = pygame.image.load(os.path.join(RootPath,'Download','assets', 'SkyAsset.png'))
 
 
 
@@ -25,6 +25,7 @@ while running:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       running = False
+      
 
       
       pygame.display.update()
