@@ -19,7 +19,12 @@ pygame.display.set_caption("Final project - Flappy Bird")
 print("Current Working Directory:", os.getcwd())
 
 #Background Image Setup
-Background = pygame.image.load(os.path.join(home_directory, 'Downloads','FinalProject-main.zip', 'FinalProject-main', 'Assets', 'SkyAsset.png'))
+Background = pygame.image.load(os.path.join(home_directory, 'Downloads','FinalProject-main.zip', 'FinalProject-main', 'assets', 'SkyAsset.png'))
+#Example to get the lazy way -- -- -- -- C:\Users\Bryan\Downloads\FinalProject-main.zip\FinalProject-main\assets
+
+
+
+
 
 #Setting mouse cursor
 pygame.mouse.set_cursor(*pygame.cursors.arrow)
