@@ -17,6 +17,7 @@ RootPath = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 WindowScreen = pygame.display.set_mode((480,720))
 pygame.display.set_caption("Final project - Flappy Bird")
 
+print("Current Working Directory:", os.getcwd())
 
 #Background Image Setup
 Background = pygame.image.load(os.path.join(RootPath, 'SkyAsset.png'))
