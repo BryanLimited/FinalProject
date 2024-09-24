@@ -9,8 +9,7 @@ import pygame
 pygame.init()
 
 #setting root path for Python 
-
-RootPath = os.path.join(os.path.dirname(os.path.abspath(__file__)))
+home_directory = os.path.expanduser("~")
 
 
 #Window screen setup 
@@ -20,7 +19,7 @@ pygame.display.set_caption("Final project - Flappy Bird")
 print("Current Working Directory:", os.getcwd())
 
 #Background Image Setup
-Background = pygame.image.load(os.path.join(RootPath, 'SkyAsset.png'))
+Background = pygame.image.load(os.path.join(home_directory, 'Assets', 'SkyAsset.png'))
 
 #Setting mouse cursor
 pygame.mouse.set_cursor(*pygame.cursors.arrow)
