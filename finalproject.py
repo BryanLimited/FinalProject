@@ -9,14 +9,17 @@ import pygame
 pygame.init()
 
 #setting root path for Python 
-RootPath = os.path.join(os.path.dirname(os.path.realpath(__file__)))
+os.chdir("C:/Users")
+
+
+RootPath = os.path.join(os.path.dirname(os.path.realpath(__file__).parent))
 #Window screen setup 
 WindowScreen = pygame.display.set_mode((480,720))
 pygame.display.set_caption("Bootleg Flappy")
 
 
 #Background Image Setup
-Background = pygame.image.load(os.path.join(RootPath,'Download','assets', 'SkyAsset.png'))
+Background = pygame.image.load(os.path.join(RootPath,'assets', 'SkyAsset.png'))
 
 
 
