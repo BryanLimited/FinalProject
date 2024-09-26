@@ -1,16 +1,18 @@
 #Authors: Bryan Soares & Elijah Avri
 
-#importing os
+
 import os
+import sys
+from pathlib import Path
 
 
 #Importing pygame
 import pygame
 pygame.init()
 
-#setting root path
-
-RootPath = os.path.dirname(__file__)
+#Calling path 
+FolderPath = os.path.abspath(sys.argv[0])
+RootPath = os.path.dirname(FolderPath)
 
 #Window screen setup 
 
@@ -29,6 +31,6 @@ while running:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       running = False
-      pygame.display.update()
-
-
+    pygame.display.update()
+    WindowScreen.blit(Background, (0,0))
+      
