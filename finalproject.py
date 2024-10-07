@@ -26,10 +26,13 @@ pygame.display.set_caption("Bootleg Flappy")
 LoadImage = os.path.join(RootPath, 'assets' , 'SkyAsset.png')
 Background = pygame.image.load(LoadImage)
 
+#Player
+LoadPLayer = os.path.join(RootPath, 'assets', 'PlayerBird.png')
+Player = pygame.image.load(LoadPLayer)
 
 #Pipe 
 PipeImageLoad = os.path.join(RootPath, 'assets', 'Pipe.png')
-PipeImageLoad = pygame.image.load(PipeImageLoad)
+PipeImage = pygame.image.load(PipeImageLoad)
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
