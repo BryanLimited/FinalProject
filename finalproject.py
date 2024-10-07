@@ -17,7 +17,7 @@ RootPath = os.path.dirname(FolderPath)
 #Window screen setup 
 
 WindowScreen = pygame.display.set_mode((480,720))
-pygame.display.set_caption("Bootleg Flappy")
+pygame.display.set_caption("Flappy Bird")
 
 
 #- - - - - - - - - - - - - - - -#Image Setup - -- - - - - - - - - - - - - - - - - - - -
@@ -34,10 +34,17 @@ Player = pygame.image.load(LoadPLayer)
 PipeImageLoad = os.path.join(RootPath, 'assets', 'Pipe.png')
 PipeImage = pygame.image.load(PipeImageLoad)
 
+
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+
 
 running = True
 while running:
+  print("Running game")
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       running = False
