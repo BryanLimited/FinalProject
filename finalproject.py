@@ -20,11 +20,18 @@ WindowScreen = pygame.display.set_mode((480,720))
 pygame.display.set_caption("Bootleg Flappy")
 
 
-#Background Image Setup
+#- - - - - - - - - - - - - - - -#Image Setup - -- - - - - - - - - - - - - - - - - - - -
+
+#Background
 LoadImage = os.path.join(RootPath, 'assets' , 'SkyAsset.png')
 Background = pygame.image.load(LoadImage)
 
 
+#Pipe 
+PipeImageLoad = os.path.join(RootPath, 'assets', 'Pipe.png')
+PipeImageLoad = pygame.image.load(PipeImageLoad)
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 running = True
 while running:
