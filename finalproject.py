@@ -34,10 +34,11 @@ Player = pygame.image.load(LoadPLayer)
 PipeImageLoad = os.path.join(RootPath, 'assets', 'Pipe.png')
 PipeImage = pygame.image.load(PipeImageLoad)
 
-
+#Base
+BaseImageLoad = os.path.join(RootPath, 'assets', 'base.png')
+BaseImage = pygame.image.load(BaseImageLoad)
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 
 
 
@@ -50,4 +51,5 @@ while running:
       running = False
     pygame.display.update()
     WindowScreen.blit(Background, (0,0))
+    WindowScreen.blit(BaseImage, 1,1)
       
