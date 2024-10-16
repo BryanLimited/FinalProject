@@ -22,7 +22,7 @@ Bryan Soares
   
 
   
-Elijah Avri
+Elijah AvriL
  - Added the image asset for the bird 
  - Made the class for the bird (Scaled and positioned as well as including Gravity/Velocity values)
  - Added key binds events for the player ( Used the spacebar K_SPACE to adjust the bird's velocity)
