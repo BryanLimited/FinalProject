@@ -1,44 +1,48 @@
 #Authors: Bryan Soares & Elijah Avril
 
 
-import os
-import sys
-from pathlib import Path
-
 
 #Importing pygame
 import pygame
 pygame.init()
 
-#Calling path 
+
+
+#Importing to call Paths
+import os
+import sys
+from pathlib import Path
+
+
+#Calling folder path 
 FolderPath = os.path.abspath(sys.argv[0])
 RootPath = os.path.dirname(FolderPath)
 
-#Window screen setup 
 
+#Window screen setup 
 WindowScreen = pygame.display.set_mode((480,720))
 pygame.display.set_caption("Flappy Bird")
 
 
-## - - - - - - - - - - - -Image Class Setup - - - - - - - - - - - - - - - - - - - - -
+## - - - - - - - - - - - -Assets/Images calling  - - - - - - - - - - - - - - - - - - - - -
 
-LoadImage = os.path.join(RootPath, 'assets' , 'SkyAsset.png')
+LoadImage = os.path.join(RootPath, 'assets' , 'SkyAsset.png') #SkyAsset
 Background = pygame.image.load(LoadImage)
 
-LoadPLayer = os.path.join(RootPath, 'assets', 'PlayerBird.png')
+LoadPLayer = os.path.join(RootPath, 'assets', 'PlayerBird.png') #Player bird asset
 Player = pygame.image.load(LoadPLayer)
 
-PipeImageLoad = os.path.join(RootPath, 'assets', 'Pipe.png')
+PipeImageLoad = os.path.join(RootPath, 'assets', 'Pipe.png') #Pipe asset
 PipeImage = pygame.image.load(PipeImageLoad)
 
-BaseImageLoad = os.path.join(RootPath, 'assets', 'base.png')
+BaseImageLoad = os.path.join(RootPath, 'assets', 'base.png') #Floor asset 
 BaseFloor = pygame.image.load(BaseImageLoad)
 
-#- - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#- - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 
 
-# - - - - - - - - - - - - - - - - - - - Image Classes - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - Image/Assets setup - - - - - - - - - - - - - - - - - - - - - - - -
 
 class Bird:
     def __init__(self): #Scales player image, sets the position and gravity, velocity, etc.
@@ -63,11 +67,17 @@ class Bird:
 bird = Bird()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# - - - -Foor base position and speeed - - -
+
+
+# - - - -Floor base position and speed - - -
+
 base_speed = 2
 base_x = 0
+
 #- - - - - - - - - - - - - - - - - - - - - -
 
+
+#Pygame application running 
 running = True
 while running:
     for event in pygame.event.get():
@@ -83,10 +93,14 @@ while running:
     if base_x <= -WindowScreen.get_width():
         base_x = 0
 
-    WindowScreen.blit(Background, (0, 0)) # Setting Position of the background, player, and floor
+#----- Setting Position of the background, player, and floor - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    WindowScreen.blit(Background, (0, 0)) 
     WindowScreen.blit(bird.image, (bird.x, bird.y)) 
     WindowScreen.blit(BaseFloor, (base_x, WindowScreen.get_height() - BaseFloor.get_height()))
     WindowScreen.blit(BaseFloor, (base_x + WindowScreen.get_width(), WindowScreen.get_height() - BaseFloor.get_height()))
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
     pygame.display.update() #Updates the display
 
