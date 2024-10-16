@@ -7,10 +7,12 @@ from pathlib import Path
 
 
 #Importing pygame
+
 import pygame
 pygame.init()
 
 #Calling path 
+
 FolderPath = os.path.abspath(sys.argv[0])
 RootPath = os.path.dirname(FolderPath)
 
@@ -20,7 +22,7 @@ WindowScreen = pygame.display.set_mode((480,720))
 pygame.display.set_caption("Flappy Bird")
 
 
-## - - - - - - - - - - - -Image Class Setup - - - - - - - - - - - - - - - - - - - - -
+## - - - - - - - - - - - -Image Class calling - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 LoadImage = os.path.join(RootPath, 'assets' , 'SkyAsset.png')
 Background = pygame.image.load(LoadImage)
@@ -34,11 +36,11 @@ PipeImage = pygame.image.load(PipeImageLoad)
 BaseImageLoad = os.path.join(RootPath, 'assets', 'base.png')
 BaseFloor = pygame.image.load(BaseImageLoad)
 
-#- - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#- - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 
-# - - - - - - - - - - - - - - - - - - - Image Classes - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - Image Class setup - - - - - - - - - - - - - - - - - - - - - - - -
 
 class Bird:
     def __init__(self):
@@ -62,10 +64,15 @@ class Bird:
 
 bird = Bird()
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# - - - -Foor base position and speeed - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+# - - - -Foor base position % speed - - -
+
 base_speed = 2
 base_x = 0
+
 #- - - - - - - - - - - - - - - - - - - - - -
 
 running = True
@@ -83,10 +90,17 @@ while running:
     if base_x <= -WindowScreen.get_width():
         base_x = 0
 
+
+#-------------------------------------------Images setup----------------------------------------------------------------------------------
+
+
     WindowScreen.blit(Background, (0, 0))
     WindowScreen.blit(bird.image, (bird.x, bird.y))
     WindowScreen.blit(BaseFloor, (base_x, WindowScreen.get_height() - BaseFloor.get_height()))
     WindowScreen.blit(BaseFloor, (base_x + WindowScreen.get_width(), WindowScreen.get_height() - BaseFloor.get_height()))
+
+
+#------------------------------------------------------------------------------------------------------------------------------
 
     pygame.display.update()
 
