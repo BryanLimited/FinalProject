@@ -1,4 +1,4 @@
-#Authors: Bryan Soares & Elijah Avri
+#Authors: Bryan Soares & Elijah Avril
 
 
 import os
@@ -7,12 +7,10 @@ from pathlib import Path
 
 
 #Importing pygame
-
 import pygame
 pygame.init()
 
 #Calling path 
-
 FolderPath = os.path.abspath(sys.argv[0])
 RootPath = os.path.dirname(FolderPath)
 
@@ -22,7 +20,7 @@ WindowScreen = pygame.display.set_mode((480,720))
 pygame.display.set_caption("Flappy Bird")
 
 
-## - - - - - - - - - - - -Image Class calling - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## - - - - - - - - - - - -Image Class Setup - - - - - - - - - - - - - - - - - - - - -
 
 LoadImage = os.path.join(RootPath, 'assets' , 'SkyAsset.png')
 Background = pygame.image.load(LoadImage)
@@ -36,14 +34,14 @@ PipeImage = pygame.image.load(PipeImageLoad)
 BaseImageLoad = os.path.join(RootPath, 'assets', 'base.png')
 BaseFloor = pygame.image.load(BaseImageLoad)
 
-#- - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#- - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 
-# - - - - - - - - - - - - - - - - - - - Image Class setup - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - Image Classes - - - - - - - - - - - - - - - - - - - - - - - -
 
 class Bird:
-    def __init__(self):
+    def __init__(self): #Scales player image, sets the position and gravity, velocity, etc.
         self.image = pygame.transform.scale(Player, (50, 35))
         self.x = 50  
         self.y = WindowScreen.get_height() / 2 - self.image.get_height() / 2
@@ -51,7 +49,7 @@ class Bird:
         self.jump_strength = -10
         self.velocity = 0
     
-    def update(self):
+    def update(self): # Updates position to apply the correct gravity and velocity on player
         self.velocity += self.gravity
         self.y += self.velocity
         
@@ -64,44 +62,32 @@ class Bird:
 
 bird = Bird()
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-
-# - - - -Foor base position % speed - - -
-
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - -Foor base position and speeed - - -
 base_speed = 2
 base_x = 0
-
 #- - - - - - - - - - - - - - - - - - - - - -
 
 running = True
 while running:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT: 
             running = False
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN: #User inputs and what happens when you press space
             if event.key == pygame.K_SPACE:
                 bird.velocity = bird.jump_strength
 
-    bird.update()
+    bird.update() # Updates position of player
 
-    base_x -= base_speed
+    base_x -= base_speed #Sets floor speed and position and moves it
     if base_x <= -WindowScreen.get_width():
         base_x = 0
 
-
-#-------------------------------------------Images setup----------------------------------------------------------------------------------
-
-
-    WindowScreen.blit(Background, (0, 0))
-    WindowScreen.blit(bird.image, (bird.x, bird.y))
+    WindowScreen.blit(Background, (0, 0)) # Setting Position of the background, player, and floor
+    WindowScreen.blit(bird.image, (bird.x, bird.y)) 
     WindowScreen.blit(BaseFloor, (base_x, WindowScreen.get_height() - BaseFloor.get_height()))
     WindowScreen.blit(BaseFloor, (base_x + WindowScreen.get_width(), WindowScreen.get_height() - BaseFloor.get_height()))
 
-
-#------------------------------------------------------------------------------------------------------------------------------
-
-    pygame.display.update()
+    pygame.display.update() #Updates the display
 
 pygame.quit()
