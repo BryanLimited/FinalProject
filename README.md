@@ -19,9 +19,11 @@ Bryan Soares
 - Set up the file paths using os and sys modules to manage asset paths
 - Made & added all the assets, loaded them using the path stored in RootPath
 - Added Base ground movement (Adjusted base_x position to create an illusion of looped movement)
+  
 
-  Elijah Avri
-  - Added the image asset for the bird 
-  - Made the class for the bird (Scaled and positioned as well as including Gravity/Velocity values)
-  - Added key binds events for the player ( Used the spacebar K_SPACE to adjust the bird's velocity)
+  
+Elijah Avri
+ - Added the image asset for the bird 
+ - Made the class for the bird (Scaled and positioned as well as including Gravity/Velocity values)
+ - Added key binds events for the player ( Used the spacebar K_SPACE to adjust the bird's velocity)
             
