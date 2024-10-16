@@ -10,7 +10,7 @@
 
 
 ## What is this? 
-This project recreates the popular mobile game Flappy Bird. It was developed using Python and the Pygame library as part of our final project for freshman year in college.
+This project is a recreation of the popular mobile game Flappy Bird, developed using Python and the Pygame library. It was created as part of our final project for our freshman year in college
 
 ## Progress so far 10/15/2024 - You can check commits on who did the changes or read it here 
 
