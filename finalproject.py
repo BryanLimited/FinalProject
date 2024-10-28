@@ -12,6 +12,7 @@ pygame.init()
 import os
 import sys
 from pathlib import Path
+import random
 
 
 #Calling folder path 
@@ -64,7 +65,30 @@ class Bird:
         if self.y < 0:
             self.y = 0
 
-bird = Bird()
+class Pipe: 
+    def __init__(self, x, y):
+        self.image = pygame.transform.scale(PipeImage, (5000 , 5000))
+        self.image = PipeImage
+        self.x = x
+        self.y = y
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
+        self.speed = 2
+    
+    def update(self):
+        self.x -= self.speed
+        if self.x < -self.width:
+            self.x = WindowScreen.get_width()
+            self.y = random.randint(-self.height, 0)
+
+
+
+
+bird = Bird() 
+pipes = [Pipe(300, -100), Pipe(600, -150)]
+
+
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -73,6 +97,8 @@ bird = Bird()
 
 base_speed = 2
 base_x = 0
+
+
 
 #- - - - - - - - - - - - - - - - - - - - - -
 
@@ -93,12 +119,18 @@ while running:
     if base_x <= -WindowScreen.get_width():
         base_x = 0
 
+    for pipe in pipes:
+        pipe.update()
+
 #----- Setting Position of the background, player, and floor - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
     WindowScreen.blit(Background, (0, 0)) 
     WindowScreen.blit(bird.image, (bird.x, bird.y)) 
     WindowScreen.blit(BaseFloor, (base_x, WindowScreen.get_height() - BaseFloor.get_height()))
     WindowScreen.blit(BaseFloor, (base_x + WindowScreen.get_width(), WindowScreen.get_height() - BaseFloor.get_height()))
+    WindowScreen.blit(pipe.image, (pipe.x, pipe.y))
+    WindowScreen.blit(pipe.image, (pipe.x, pipe.y + pipe.height + 500)) 
+    
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
