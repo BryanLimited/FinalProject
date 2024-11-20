@@ -48,10 +48,10 @@ BaseFloor = pygame.image.load(BaseImageLoad)
 class Bird:
     def __init__(self): #Scales player image, sets the position and gravity, velocity, etc.
         self.image = pygame.transform.scale(Player, (50, 35))
-        self.x = 50  
+        self.x = 50
         self.y = WindowScreen.get_height() / 2 - self.image.get_height() / 2
-        self.gravity = 0.5
-        self.jump_strength = -10
+        self.gravity = 0.4
+        self.jump_strength = -13
         self.velocity = 0
     
     def update(self): # Updates position to apply the correct gravity and velocity on player
@@ -95,10 +95,8 @@ pipes = [Pipe(300, -100), Pipe(600, -150)]
 
 # - - - -Floor base position and speed - - -
 
-base_speed = 2
-base_x = 0
-
-
+base_speed = 3
+base_x = 1
 
 #- - - - - - - - - - - - - - - - - - - - - -
 
@@ -119,6 +117,8 @@ while running:
     if base_x <= -WindowScreen.get_width():
         base_x = 0
 
+    
+
     for pipe in pipes:
         pipe.update()
 
@@ -128,6 +128,8 @@ while running:
     WindowScreen.blit(bird.image, (bird.x, bird.y)) 
     WindowScreen.blit(BaseFloor, (base_x, WindowScreen.get_height() - BaseFloor.get_height()))
     WindowScreen.blit(BaseFloor, (base_x + WindowScreen.get_width(), WindowScreen.get_height() - BaseFloor.get_height()))
+    WindowScreen.blit(BaseFloor, (base_x + 300,608.8)) #Overlap
+    WindowScreen.blit(BaseFloor, (base_x + 700,608.8)) #Overlap
     WindowScreen.blit(pipe.image, (pipe.x, pipe.y))
     WindowScreen.blit(pipe.image, (pipe.x, pipe.y + pipe.height + 500)) 
     
