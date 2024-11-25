@@ -50,6 +50,9 @@ class Bird:
         self.image = pygame.transform.scale(Player, (50, 35))
         self.x = 50
         self.y = WindowScreen.get_height() / 2 - self.image.get_height() / 2
+        self.rect = self.image.get_rect() 
+        self.rect.x = 50
+        self.rect.y = WindowScreen.get_height() / 2 - self.image.get_height() / 2
         self.gravity = 0.4
         self.jump_strength = -13
         self.velocity = 0
@@ -64,25 +67,41 @@ class Bird:
             
         if self.y < 0:
             self.y = 0
+    def check_for_collisions(self, pipes):
+        for pipe in pipes:
+             if self.rect.colliderect(pipe.rect) == True:
+                return True
+        return False
+    
 
 class Pipe: 
     def __init__(self, x, y):
-        self.image = pygame.transform.scale(PipeImage, (5000 , 5000))
-        self.image = PipeImage
+        self.image = pygame.transform.scale(PipeImage, (250 , 350))
         self.x = x
         self.y = y
         self.width = self.image.get_width()
         self.height = self.image.get_height()
         self.speed = 2
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y= y
+      
     
     def update(self):
         self.x -= self.speed
         if self.x < -self.width:
             self.x = WindowScreen.get_width()
             self.y = random.randint(-self.height, 0)
+            
+        
 
 
-
+def game_over():
+    font = pygame.font.SysFont('Arial', 36)
+    text = font.render("Game Over!", True, (255, 0, 0))
+    WindowScreen.blit(text, (WindowScreen.get_width() // 3, WindowScreen.get_height() // 3))
+    pygame.display.update()
+    pygame.time.delay(2000)
 
 bird = Bird() 
 pipes = [Pipe(300, -100), Pipe(600, -150)]
@@ -112,6 +131,10 @@ while running:
                 bird.velocity = bird.jump_strength
 
     bird.update() # Updates position of player
+           
+    if bird.check_for_collisions(pipes) == True:
+        game_over()
+        running = False
 
     base_x -= base_speed #Sets floor speed and position and moves it
     if base_x <= -WindowScreen.get_width():
