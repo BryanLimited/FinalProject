@@ -55,12 +55,14 @@ class Bird():
         self.rect.x = 50
         self.rect.y = WindowScreen.get_height() / 2 - self.image.get_height() / 2
         self.gravity = 0.4
-        self.jump_strength = -13
+        self.jump_strength = -8
         self.velocity = 0
     
     def update(self): # Updates position to apply the correct gravity and velocity on player
         self.velocity += self.gravity
         self.y += self.velocity
+        self.rect = self.image.get_rect()
+        self.rect.y = self.y
         
         if self.y > WindowScreen.get_height() - BaseFloor.get_height() - self.image.get_height():
             self.y = WindowScreen.get_height() - BaseFloor.get_height() - self.image.get_height()
@@ -68,11 +70,7 @@ class Bird():
             
         if self.y < 0:
             self.y = 0
-    def check_for_collisions(self, pipes):
-        for pipe in pipes:
-             if   WindowScreen.blit(bird.image, (bird.x, bird.y)) == WindowScreen.blit(pipe.image, (pipe.x, pipe.y)) or WindowScreen.blit(bird.image, (bird.x, bird.y)) ==  WindowScreen.blit(pipe.image, (pipe.x, pipe.y + pipe.height + 500)):
-                return True 
-        return False
+
     
 
 class Pipe(): 
@@ -90,10 +88,15 @@ class Pipe():
     
     def update(self):
         self.x -= self.speed
+        self.rect.x = self.x
         if self.x < -self.width:
             self.x = 450
-            self.y = 155
+            self.y = 160
+            self.rect.y = self.y
             self.image = pygame.transform.scale(PipeImage, (250 , random.randint(400,650)))
+            self.width = self.image.get_width()
+            self.height = self.image.get_height()
+            self.rect = self.image.get_rect()
 
 class InvertedPipe(Pipe):
     def __init__(self, x, y):
@@ -101,10 +104,15 @@ class InvertedPipe(Pipe):
         self.image = pygame.transform.flip(self.image,False, True)
     def update(self):
         self.x -= self.speed
+        self.rect.x = self.x
         if self.x < -self.width:
             self.x = 450
             self.y = 0
+            self.rect.y = self.y
             self.image = pygame.transform.scale(self.image, (250 , random.randint(350,650)))
+            self.width = self.image.get_width()
+            self.height = self.image.get_height()
+            self.rect = self.image.get_rect()
 
 
 def game_over():
@@ -114,8 +122,13 @@ def game_over():
     pygame.display.update()
     pygame.time.delay(2000)
 
+def check_collision(bird, pipe):
+    if bird.rect.colliderect(pipe):
+        game_over()
+        
+
 bird = Bird() 
-pipe1 = Pipe(300, -100)
+pipe1 = Pipe(300, 265)
 pipe2 = InvertedPipe(300,0)
 
 
@@ -145,7 +158,8 @@ while running:
     bird.update() # Updates position of player
     # if bird.y ==  WindowScreen.get_height() - BaseFloor.get_height() - bird.image.get_height():
     #     game_over()
-
+    check_collision(bird, pipe1)
+    check_collision(bird,pipe2)
     base_x -= base_speed #Sets floor speed and position and moves it
     if base_x <= -WindowScreen.get_width():
         base_x = 0
@@ -154,6 +168,8 @@ while running:
 
     pipe1.update()
     pipe2.update()
+    check_collision(bird, pipe1)
+    check_collision(bird,pipe2)
         
         
 
