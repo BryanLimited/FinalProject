@@ -136,7 +136,13 @@ def speed_up(count, pipe):
         pipe.speed == 4
     elif count >= 20:
         pipe.speed == 6
-    
+def show_text(count):
+    display = pygame.display.set_caption('Counter Text')
+    font = pygame.font.SysFont('Arial', 36)
+    text = font.render(count, True, (255,0,0))
+    textRect = text.get_rect()
+    textRect.center = (250, 250)
+    display.blit(text,textRect)
 
 bird = Bird() 
 pipe1 = Pipe(300, 400)
