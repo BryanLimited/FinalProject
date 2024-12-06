@@ -33,7 +33,7 @@ Background = pygame.image.load(LoadImage)
 LoadPLayer = os.path.join(RootPath, 'assets', 'PlayerBird.png') #Player bird asset
 Player = pygame.image.load(LoadPLayer)
 
-PipeImageLoad = os.path.join(RootPath, 'assets', 'Pipe.png') #Pipe asset
+PipeImageLoad = os.path.join(RootPath, 'assets', 'NewPipe1.png') #Pipe asset
 PipeImage = pygame.image.load(PipeImageLoad)
 
 BaseImageLoad = os.path.join(RootPath, 'assets', 'base.png') #Floor asset 
@@ -49,12 +49,12 @@ class Bird():
     WIDTH = HEIGHT = 32
     def __init__(self): #Scales player image, sets the position and gravity, velocity, etc.
         self.image = pygame.transform.scale(Player, (50, 35))
-        self.x = 50
+        self.x = 20
         self.y = WindowScreen.get_height() / 2 - self.image.get_height() / 2
         self.rect = self.image.get_rect() 
-        self.rect.x = 50
+        self.rect.x = 20
         self.rect.y = WindowScreen.get_height() / 2 - self.image.get_height() / 2
-        self.gravity = 0.4
+        self.gravity = 0.3
         self.jump_strength = -8
         self.velocity = 0
     
@@ -75,7 +75,7 @@ class Bird():
 
 class Pipe(): 
     def __init__(self, x, y):
-        self.image = pygame.transform.scale(PipeImage, (250 , 350))
+        self.image = pygame.transform.scale(PipeImage, (100 , 200))
         self.x = x
         self.y = y
         self.width = self.image.get_width()
@@ -88,15 +88,15 @@ class Pipe():
     
     def update(self):
         self.x -= self.speed
-        self.rect.x = self.x
+        self.rect.x = self.x -10
         if self.x < -self.width:
             self.x = 450
-            self.y = 160
-            self.rect.y = self.y
-            self.image = pygame.transform.scale(PipeImage, (250 , random.randint(400,650)))
+            self.y = 500
+            self.rect.y = self.y -10
+            self.image = pygame.transform.scale(PipeImage, (100 , random.randint(100,240)))
             self.width = self.image.get_width()
             self.height = self.image.get_height()
-            self.rect = self.image.get_rect()
+
 
 class InvertedPipe(Pipe):
     def __init__(self, x, y):
@@ -104,15 +104,18 @@ class InvertedPipe(Pipe):
         self.image = pygame.transform.flip(self.image,False, True)
     def update(self):
         self.x -= self.speed
-        self.rect.x = self.x
+        self.rect.x = self.x -10
         if self.x < -self.width:
             self.x = 450
             self.y = 0
-            self.rect.y = self.y
-            self.image = pygame.transform.scale(self.image, (250 , random.randint(350,650)))
+            self.image = pygame.transform.scale(self.image, (100 , random.randint(100,240)))
             self.width = self.image.get_width()
             self.height = self.image.get_height()
             self.rect = self.image.get_rect()
+            self.rect.y = self.y - 10 
+        
+        
+        
 
 
 def game_over():
@@ -121,14 +124,16 @@ def game_over():
     WindowScreen.blit(text, (WindowScreen.get_width() // 3, WindowScreen.get_height() // 3))
     pygame.display.update()
     pygame.time.delay(2000)
+    pygame.quit()
 
-def check_collision(bird, pipe):
+
+def check_collision(bird, pipe): 
     if bird.rect.colliderect(pipe):
         game_over()
         
 
 bird = Bird() 
-pipe1 = Pipe(300, 265)
+pipe1 = Pipe(300, 400)
 pipe2 = InvertedPipe(300,0)
 
 
@@ -168,8 +173,7 @@ while running:
 
     pipe1.update()
     pipe2.update()
-    check_collision(bird, pipe1)
-    check_collision(bird,pipe2)
+
         
         
 
