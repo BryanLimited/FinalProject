@@ -131,6 +131,12 @@ def check_collision(bird, pipe):
     if bird.rect.colliderect(pipe):
         game_over()
         
+def speed_up(count, pipe):
+    if count >= 10:
+        pipe.speed == 4
+    elif count >= 20:
+        pipe.speed == 6
+    
 
 bird = Bird() 
 pipe1 = Pipe(300, 400)
