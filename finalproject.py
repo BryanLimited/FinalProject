@@ -25,6 +25,15 @@ WindowScreen = pygame.display.set_mode((480,720))
 pygame.display.set_caption("Flappy Bird")
 
 
+
+##----------------------- Audio Calling ---------------------------------------------------
+
+pygame.mixer.init()
+
+LoadSong =  os.path.join(RootPath, 'audio' , 'Happy Bird2.mp3')
+pygame.mixer.music.play(-1)
+pygame.mixer.music.load(LoadSong)
+
 ## - - - - - - - - - - - -Assets/Images calling  - - - - - - - - - - - - - - - - - - - - -
 
 LoadImage = os.path.join(RootPath, 'assets' , 'SkyAsset.png') #SkyAsset
@@ -191,6 +200,7 @@ while running:
         print(f'{bird.x} + {pipe1.x}')
     
     show_text(score_counter)
+
 
 
     pipe1.update()
