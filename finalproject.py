@@ -30,10 +30,9 @@ pygame.display.set_caption("Flappy Bird")
 
 pygame.mixer.init()
 
-LoadSong =  os.path.join(RootPath, 'audio' , 'Happy Bird2.mp3')
+LoadSong = os.path.join(RootPath, 'audio' , 'Happy Bird2.mp3')
 pygame.mixer.music.load(LoadSong)
 pygame.mixer.music.play(-1)
-
 
 ## - - - - - - - - - - - -Assets/Images calling  - - - - - - - - - - - - - - - - - - - - -
 
@@ -49,11 +48,7 @@ PipeImage = pygame.image.load(PipeImageLoad)
 BaseImageLoad = os.path.join(RootPath, 'assets', 'base.png') #Floor asset 
 BaseFloor = pygame.image.load(BaseImageLoad)
 
-#- - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-
-
-# - - - - - - - - - - - - - - - - - - - Image/Assets setup - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - Class Setups - - - - - - - - - - - - - - - - - - - - - - - -
 
 class Bird():
     WIDTH = HEIGHT = 32
@@ -112,6 +107,8 @@ class InvertedPipe(Pipe):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.image = pygame.transform.flip(self.image,False, True)
+
+
     def update(self):
         self.x -= self.speed
         self.rect.x = self.x -10
@@ -124,9 +121,6 @@ class InvertedPipe(Pipe):
             self.rect = self.image.get_rect()
             self.rect.y = self.y - 10 
         
-        
-        
-
 
 def game_over():
     font = pygame.font.SysFont('Arial', 36)
@@ -141,10 +135,11 @@ def check_collision(bird, pipe):
     if bird.rect.colliderect(pipe):
         game_over()
         
+
 def speed_up(count, pipe):
     if count >= 1:
-        pipe.speed == 4
-
+        pipe1.speed == 4
+        pipe2.speed = 4
     elif count >= 20:
         pipe.speed == 6
 
@@ -199,9 +194,26 @@ while running:
         score_counter += 1 
         print(score_counter)
         print(f'{bird.x} + {pipe1.x}')
-    
+     
     show_text(score_counter)
 
+#speed increase - - - - - - -
+if score_counter >= 2:
+    pipe1.speed = 2
+    pipe2.speed = 2
+if score_counter >= 3:
+    pipe1.speed = 3
+    pipe2.speed = 3
+if score_counter >= 5:
+    pipe1.speed = 5
+    pipe2.speed = 5
+if score_counter >= 7:
+    pipe1.speed = 6
+    pipe2.speed = 6
+    
+
+    
+        
 
 
     pipe1.update()
