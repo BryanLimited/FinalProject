@@ -54,8 +54,8 @@ class Bird():
         self.rect = self.image.get_rect() 
         self.rect.x = 20
         self.rect.y = WindowScreen.get_height() / 2 - self.image.get_height() / 2
-        self.gravity = 0.3
-        self.jump_strength = -8
+        self.gravity = 0.2
+        self.jump_strength = -5
         self.velocity = 0
     
     def update(self): # Updates position to apply the correct gravity and velocity on player
@@ -80,7 +80,7 @@ class Pipe():
         self.y = y
         self.width = self.image.get_width()
         self.height = self.image.get_height()
-        self.speed = 2
+        self.speed = 0.5
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y= y
@@ -127,22 +127,24 @@ def game_over():
     pygame.quit()
 
 
-def check_collision(bird, pipe): 
+def check_collision(bird, pipe):  
     if bird.rect.colliderect(pipe):
         game_over()
         
 def speed_up(count, pipe):
-    if count >= 10:
+    if count >= 1:
         pipe.speed == 4
+
     elif count >= 20:
         pipe.speed == 6
+
 def show_text(count):
-    display = pygame.display.set_caption('Counter Text')
-    font = pygame.font.SysFont('Arial', 36)
-    text = font.render(count, True, (255,0,0))
+    font = pygame.font.SysFont('Arial ', 36)
+    text = font.render(str(count), True, (255,0,0))
     textRect = text.get_rect()
     textRect.center = (250, 250)
-    display.blit(text,textRect)
+    WindowScreen.blit(text,textRect)
+    pygame.display.update()
 
 bird = Bird() 
 pipe1 = Pipe(300, 400)
@@ -163,7 +165,8 @@ base_x = 1
 
 
 #Pygame application running 
-running = True
+running = True   
+score_counter = 0
 while running:  
     for event in pygame.event.get():
         if event.type == pygame.QUIT: 
@@ -176,12 +179,19 @@ while running:
     # if bird.y ==  WindowScreen.get_height() - BaseFloor.get_height() - bird.image.get_height():
     #     game_over()
     check_collision(bird, pipe1)
-    check_collision(bird,pipe2)
+    check_collision(bird,pipe2) 
     base_x -= base_speed #Sets floor speed and position and moves it
     if base_x <= -WindowScreen.get_width():
         base_x = 0
+        
+ 
+    if bird.x == pipe1.x:
+        score_counter += 1 
+        print(score_counter)
+        print(f'{bird.x} + {pipe1.x}')
+    
+    show_text(score_counter)
 
-   
 
     pipe1.update()
     pipe2.update()
