@@ -31,8 +31,9 @@ pygame.display.set_caption("Flappy Bird")
 pygame.mixer.init()
 
 LoadSong =  os.path.join(RootPath, 'audio' , 'Happy Bird2.mp3')
-pygame.mixer.music.play(-1)
 pygame.mixer.music.load(LoadSong)
+pygame.mixer.music.play(-1)
+
 
 ## - - - - - - - - - - - -Assets/Images calling  - - - - - - - - - - - - - - - - - - - - -
 
