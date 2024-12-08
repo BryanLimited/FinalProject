@@ -43,7 +43,7 @@ PipeImage = pygame.image.load(PipeImageLoad)
 BaseImageLoad = os.path.join(RootPath, 'assets', 'base.png') #Floor asset 
 BaseFloor = pygame.image.load(BaseImageLoad)
 
-CollectibleImageLoad = os.path.join(RootPath, 'assets', 'Pipe.png') #Pipe asset
+CollectibleImageLoad = os.path.join(RootPath, 'assets', 'BlueOrb.png') #Pipe asset
 CollectibleImage = pygame.image.load(CollectibleImageLoad)
 #- - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -222,6 +222,50 @@ while running:
 
     pickup_obtained(bird,Collectibles,score_counter)
    
+
+    if score_counter >= 0: 
+        WindowScreen.blit(Background, (0, 0)) 
+    if score_counter >= 3:
+        pipe1.speed = 2
+        pipe2.speed = 2
+    if score_counter >= 5:
+        pipe1.speed = 3
+        pipe2.speed = 3
+        WindowScreen.blit(Night, (0,0))
+    if score_counter >= 5:
+        pipe1.speed = 5
+        pipe2.speed = 5
+    if score_counter >= 7:
+        pipe1.speed = 6
+        pipe2.speed = 6
+        WindowScreen.blit(Night, (0,0))
+    if score_counter >= 12: 
+        WindowScreen.blit(Background, (0, 0)) 
+    if score_counter >= 16:
+        pipe1.speed = 2
+        pipe2.speed = 2
+    if score_counter >= 20:
+        pipe1.speed = 3
+        pipe2.speed = 3
+        WindowScreen.blit(Night, (0,0))
+    if score_counter >= 25:
+        pipe1.speed = 5
+        pipe2.speed = 5
+    if score_counter >= 30:
+        pipe1.speed = 6
+        pipe2.speed = 6
+        WindowScreen.blit(Background, (0,0))
+    if score_counter >= 35:
+        pipe1.speed = 3
+        pipe2.speed = 3
+        WindowScreen.blit(Night, (0,0))
+    if score_counter >= 45:
+        pipe1.speed = 5
+        pipe2.speed = 5
+    if score_counter >= 50:
+        pipe1.speed = 6
+        pipe2.speed = 6
+        WindowScreen.blit(Night, (0,0))
 
     pipe1.update()
     pipe2.update()
