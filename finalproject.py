@@ -30,6 +30,9 @@ pygame.display.set_caption("Flappy Bird")
 LoadImage = os.path.join(RootPath, 'assets' , 'SkyAsset.png') #SkyAsset
 Background = pygame.image.load(LoadImage)
 
+NightImage = os.path.join(RootPath, 'assets' , 'NightAsset.png') #NightAsset
+Night = pygame.image.load(NightImage)
+
 LoadPLayer = os.path.join(RootPath, 'assets', 'PlayerBird.png') #Player bird asset
 Player = pygame.image.load(LoadPLayer)
 
@@ -54,7 +57,7 @@ class Bird():
         self.rect = self.image.get_rect() 
         self.rect.x = 20
         self.rect.y = WindowScreen.get_height() / 2 - self.image.get_height() / 2
-        self.gravity = 0.3
+        self.gravity = 0.5 
         self.jump_strength = -8
         self.velocity = 0
     
@@ -80,7 +83,7 @@ class Pipe():
         self.y = y
         self.width = self.image.get_width()
         self.height = self.image.get_height()
-        self.speed = 2
+        self.speed = 1
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y= y
@@ -136,6 +139,7 @@ def speed_up(count, pipe):
         pipe.speed == 4
     elif count >= 20:
         pipe.speed == 6
+        
 def show_text(count):
     font = pygame.font.SysFont('Arial', 36)
     text = font.render(str(count), True, (255,0,0))
@@ -182,25 +186,30 @@ while running:
     if base_x <= -WindowScreen.get_width():
         base_x = 0
 
-    if bird.x == pipe1.x:
+
+    if bird.x == pipe1.x: 
             score_counter += 1 
             print(score_counter)
             print(f'{bird.x} + {pipe1.x}')
         
     show_text(score_counter)
 
-    if score_counter >= 2:
+    if score_counter >= 0: 
+        WindowScreen.blit(Background, (0, 0)) 
+    if score_counter >= 3:
         pipe1.speed = 2
         pipe2.speed = 2
-    if score_counter >= 3:
+    if score_counter >= 5:
         pipe1.speed = 3
         pipe2.speed = 3
+        WindowScreen.blit(Night, (0,0))
     if score_counter >= 5:
         pipe1.speed = 5
         pipe2.speed = 5
-    if score_counter >= 7:
+    if score_counter >= 10:
         pipe1.speed = 6
         pipe2.speed = 6
+        WindowScreen.blit(Night, (0,0))
     
    
 
@@ -212,7 +221,6 @@ while running:
 
 #----- Setting Position of the background, player, and floor - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    WindowScreen.blit(Background, (0, 0)) 
     WindowScreen.blit(bird.image, (bird.x, bird.y)) 
     WindowScreen.blit(BaseFloor, (base_x, WindowScreen.get_height() - BaseFloor.get_height()))
     WindowScreen.blit(BaseFloor, (base_x + WindowScreen.get_width(), WindowScreen.get_height() - BaseFloor.get_height()))
