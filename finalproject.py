@@ -4,6 +4,7 @@
 
 #Importing pygame
 import pygame
+import time
 pygame.init()
 
 
@@ -30,6 +31,9 @@ pygame.display.set_caption("Flappy Bird")
 LoadImage = os.path.join(RootPath, 'assets' , 'SkyAsset.png') #SkyAsset
 Background = pygame.image.load(LoadImage)
 
+NightImage = os.path.join(RootPath, 'assets' , 'NightAsset.png') #NightAsset
+Night = pygame.image.load(NightImage)
+
 LoadPLayer = os.path.join(RootPath, 'assets', 'PlayerBird.png') #Player bird asset
 Player = pygame.image.load(LoadPLayer)
 
@@ -39,6 +43,8 @@ PipeImage = pygame.image.load(PipeImageLoad)
 BaseImageLoad = os.path.join(RootPath, 'assets', 'base.png') #Floor asset 
 BaseFloor = pygame.image.load(BaseImageLoad)
 
+CollectibleImageLoad = os.path.join(RootPath, 'assets', 'Pipe.png') #Pipe asset
+CollectibleImage = pygame.image.load(CollectibleImageLoad)
 #- - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 
@@ -54,7 +60,7 @@ class Bird():
         self.rect = self.image.get_rect() 
         self.rect.x = 20
         self.rect.y = WindowScreen.get_height() / 2 - self.image.get_height() / 2
-        self.gravity = 0.3
+        self.gravity = 0.5 
         self.jump_strength = -8
         self.velocity = 0
     
@@ -80,7 +86,7 @@ class Pipe():
         self.y = y
         self.width = self.image.get_width()
         self.height = self.image.get_height()
-        self.speed = 2
+        self.speed = 2.5
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y= y
@@ -113,7 +119,22 @@ class InvertedPipe(Pipe):
             self.height = self.image.get_height()
             self.rect = self.image.get_rect()
             self.rect.y = self.y - 10 
-        
+
+class Pickup(Pipe):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        self.image = CollectibleImage
+        self.speed = 1
+    def update(self):
+        self.x -= self.speed
+        self.rect.x = self.x -10
+        if self.x < -self.width:
+            self.x = 450
+            self.y = random.randint(0,300)
+            self.width = self.image.get_width()
+            self.height = self.image.get_height()
+            self.rect = self.image.get_rect()
+            self.rect.y = self.y - 10 
         
         
 
@@ -130,12 +151,18 @@ def game_over():
 def check_collision(bird, pipe): 
     if bird.rect.colliderect(pipe):
         game_over()
+def pickup_obtained(bird,collectible,count):
+    if bird.rect.colliderect(collectible):
+        count += 20
+        collectible.x = 450
         
 def speed_up(count, pipe):
-    if count >= 10:
-        pipe.speed == 4
-    elif count >= 20:
+    if count >= 20:
+        pipe.speed == 10
+    elif 20 >= count >= 10:
         pipe.speed == 6
+    print(pipe.speed)
+
 def show_text(count):
     font = pygame.font.SysFont('Arial', 36)
     text = font.render(str(count), True, (255,0,0))
@@ -147,7 +174,7 @@ def show_text(count):
 bird = Bird() 
 pipe1 = Pipe(300, 400)
 pipe2 = InvertedPipe(300,0)
-
+Collectibles = Pickup(random.randint(100,300), random.randint(100,300))
 
 
 
@@ -182,37 +209,29 @@ while running:
     if base_x <= -WindowScreen.get_width():
         base_x = 0
 
-    if bird.x == pipe1.x:
+
+    if bird.x == pipe1.x: 
             score_counter += 1 
             print(score_counter)
             print(f'{bird.x} + {pipe1.x}')
+    elif bird.rect.colliderect(Collectibles):
+        score_counter+= 20
+        print(score_counter)
         
     show_text(score_counter)
 
-    if score_counter >= 2:
-        pipe1.speed = 2
-        pipe2.speed = 2
-    if score_counter >= 3:
-        pipe1.speed = 3
-        pipe2.speed = 3
-    if score_counter >= 5:
-        pipe1.speed = 5
-        pipe2.speed = 5
-    if score_counter >= 7:
-        pipe1.speed = 6
-        pipe2.speed = 6
-    
+    pickup_obtained(bird,Collectibles,score_counter)
    
 
     pipe1.update()
     pipe2.update()
+    Collectibles.update()
 
         
         
 
 #----- Setting Position of the background, player, and floor - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    WindowScreen.blit(Background, (0, 0)) 
+    WindowScreen.blit(Background, (0,0))
     WindowScreen.blit(bird.image, (bird.x, bird.y)) 
     WindowScreen.blit(BaseFloor, (base_x, WindowScreen.get_height() - BaseFloor.get_height()))
     WindowScreen.blit(BaseFloor, (base_x + WindowScreen.get_width(), WindowScreen.get_height() - BaseFloor.get_height()))
@@ -220,11 +239,12 @@ while running:
     WindowScreen.blit(BaseFloor, (base_x + 700,608.8)) #Overlap
     WindowScreen.blit(pipe1.image, (pipe1.x, pipe1.y))
     WindowScreen.blit(pipe2.image, (pipe2.x, pipe2.y))
-    
+    WindowScreen.blit(Collectibles.image, (Collectibles.x,Collectibles.y))
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
     pygame.display.update() #Updates the display
 
 pygame.quit()
+
  
