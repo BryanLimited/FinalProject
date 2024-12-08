@@ -83,7 +83,7 @@ class Pipe():
         self.y = y
         self.width = self.image.get_width()
         self.height = self.image.get_height()
-        self.speed = 1
+        self.speed = 2.5
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y= y
@@ -139,7 +139,7 @@ def speed_up(count, pipe):
         pipe.speed == 4
     elif count >= 20:
         pipe.speed == 6
-        
+
 def show_text(count):
     font = pygame.font.SysFont('Arial', 36)
     text = font.render(str(count), True, (255,0,0))
@@ -196,21 +196,15 @@ while running:
 
     if score_counter >= 0: 
         WindowScreen.blit(Background, (0, 0)) 
-    if score_counter >= 3:
-        pipe1.speed = 2
-        pipe2.speed = 2
-    if score_counter >= 5:
-        pipe1.speed = 3
-        pipe2.speed = 3
-        WindowScreen.blit(Night, (0,0))
-    if score_counter >= 5:
-        pipe1.speed = 5
-        pipe2.speed = 5
-    if score_counter >= 10:
-        pipe1.speed = 6
-        pipe2.speed = 6
-        WindowScreen.blit(Night, (0,0))
-    
+
+    if score_counter % 3 == 0 and score_counter != 0:
+        pipe1.speed += 2
+        pipe2.speed += 2
+
+    if score_counter >= 3 and score_counter % 10 == 0:
+        WindowScreen.blit(Night, (0, 0))
+    elif score_counter >= 15 and score_counter % 10 == 5:
+        WindowScreen.blit(Background, (0, 0))
    
 
     pipe1.update()
