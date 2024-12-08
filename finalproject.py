@@ -4,7 +4,6 @@
 
 #Importing pygame
 import pygame
-import time
 pygame.init()
 
 
@@ -26,6 +25,12 @@ WindowScreen = pygame.display.set_mode((480,720))
 pygame.display.set_caption("Flappy Bird")
 
 
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Music 
+
+LoadSong =  os.path.join(RootPath, 'audio' , 'Happy Bird2.mp3')
+pygame.mixer.music.load(LoadSong)
+pygame.mixer.music.play(-1)
+
 ## - - - - - - - - - - - -Assets/Images calling  - - - - - - - - - - - - - - - - - - - - -
 
 LoadImage = os.path.join(RootPath, 'assets' , 'SkyAsset.png') #SkyAsset
@@ -43,7 +48,10 @@ PipeImage = pygame.image.load(PipeImageLoad)
 BaseImageLoad = os.path.join(RootPath, 'assets', 'base.png') #Floor asset 
 BaseFloor = pygame.image.load(BaseImageLoad)
 
-CollectibleImageLoad = os.path.join(RootPath, 'assets', 'BlueOrb.png') #Pipe asset
+CollectibleImageLoad = os.path.join(RootPath, 'assets', 'Power.png') #power asset
+CollectibleImage = pygame.image.load(CollectibleImageLoad)
+
+CollectibleImageLoad = os.path.join(RootPath, 'assets', 'Power2.png') #power2 asset
 CollectibleImage = pygame.image.load(CollectibleImageLoad)
 #- - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -60,8 +68,8 @@ class Bird():
         self.rect = self.image.get_rect() 
         self.rect.x = 20
         self.rect.y = WindowScreen.get_height() / 2 - self.image.get_height() / 2
-        self.gravity = 0.5 
-        self.jump_strength = -8
+        self.gravity = 0.3
+        self.jump_strength = -6
         self.velocity = 0
     
     def update(self): # Updates position to apply the correct gravity and velocity on player
@@ -86,7 +94,7 @@ class Pipe():
         self.y = y
         self.width = self.image.get_width()
         self.height = self.image.get_height()
-        self.speed = 2.5
+        self.speed = 1.5
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y= y
@@ -110,7 +118,7 @@ class InvertedPipe(Pipe):
         self.image = pygame.transform.flip(self.image,False, True)
     def update(self):
         self.x -= self.speed
-        self.rect.x = self.x -10
+        self.rect.x = self.x 
         if self.x < -self.width:
             self.x = 450
             self.y = 0
@@ -125,6 +133,7 @@ class Pickup(Pipe):
         super().__init__(x, y)
         self.image = CollectibleImage
         self.speed = 1
+
     def update(self):
         self.x -= self.speed
         self.rect.x = self.x -10
@@ -134,7 +143,7 @@ class Pickup(Pipe):
             self.width = self.image.get_width()
             self.height = self.image.get_height()
             self.rect = self.image.get_rect()
-            self.rect.y = self.y - 10 
+            self.rect.y = self.y - 3
         
         
 
@@ -151,9 +160,10 @@ def game_over():
 def check_collision(bird, pipe): 
     if bird.rect.colliderect(pipe):
         game_over()
+
 def pickup_obtained(bird,collectible,count):
     if bird.rect.colliderect(collectible):
-        count += 20
+        count += 2
         collectible.x = 450
         
 def speed_up(count, pipe):
@@ -173,7 +183,7 @@ def show_text(count):
 
 bird = Bird() 
 pipe1 = Pipe(300, 400)
-pipe2 = InvertedPipe(300,0)
+pipe2 = InvertedPipe(500,0)
 Collectibles = Pickup(random.randint(100,300), random.randint(100,300))
 
 
@@ -208,64 +218,50 @@ while running:
     base_x -= base_speed #Sets floor speed and position and moves it
     if base_x <= -WindowScreen.get_width():
         base_x = 0
+    
 
 
-    if bird.x == pipe1.x: 
+    if pipe1.x == 0:        #--- workaround
             score_counter += 1 
             print(score_counter)
             print(f'{bird.x} + {pipe1.x}')
     elif bird.rect.colliderect(Collectibles):
-        score_counter+= 20
+        score_counter+= 2
         print(score_counter)
+    else:
+        print('nothing') #debug 
         
+
+    print(pipe1.x)
+
     show_text(score_counter)
 
     pickup_obtained(bird,Collectibles,score_counter)
    
-
-    if score_counter >= 0: 
-        WindowScreen.blit(Background, (0, 0)) 
-    if score_counter >= 3:
-        pipe1.speed = 2
-        pipe2.speed = 2
+#-------- speed up - - - - - - - - -
+    if score_counter >= 0:
+     WindowScreen.blit(Night, (0, 0)) 
     if score_counter >= 5:
         pipe1.speed = 3
         pipe2.speed = 3
-        WindowScreen.blit(Night, (0,0))
-    if score_counter >= 5:
-        pipe1.speed = 5
-        pipe2.speed = 5
-    if score_counter >= 7:
+    if score_counter >= 10:
+        pipe1.speed = 4
+        pipe2.speed = 4
+        WindowScreen.blit(Night, (0, 0)) 
+    if score_counter >= 15:
         pipe1.speed = 6
         pipe2.speed = 6
-        WindowScreen.blit(Night, (0,0))
-    if score_counter >= 12: 
-        WindowScreen.blit(Background, (0, 0)) 
-    if score_counter >= 16:
-        pipe1.speed = 2
-        pipe2.speed = 2
-    if score_counter >= 20:
-        pipe1.speed = 3
-        pipe2.speed = 3
-        WindowScreen.blit(Night, (0,0))
     if score_counter >= 25:
-        pipe1.speed = 5
-        pipe2.speed = 5
-    if score_counter >= 30:
-        pipe1.speed = 6
-        pipe2.speed = 6
-        WindowScreen.blit(Background, (0,0))
-    if score_counter >= 35:
-        pipe1.speed = 3
-        pipe2.speed = 3
-        WindowScreen.blit(Night, (0,0))
-    if score_counter >= 45:
-        pipe1.speed = 5
-        pipe2.speed = 5
-    if score_counter >= 50:
-        pipe1.speed = 6
-        pipe2.speed = 6
-        WindowScreen.blit(Night, (0,0))
+        pipe1.speed = 7
+        pipe2.speed = 7
+    if score_counter >= 40:
+        pipe1.speed = 9
+        pipe2.speed = 9
+        WindowScreen.blit(Background, (0, 0)) 
+
+
+    
+    
 
     pipe1.update()
     pipe2.update()
@@ -275,7 +271,7 @@ while running:
         
 
 #----- Setting Position of the background, player, and floor - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    WindowScreen.blit(Background, (0,0))
+    WindowScreen.blit(Night, (0, 0)) 
     WindowScreen.blit(bird.image, (bird.x, bird.y)) 
     WindowScreen.blit(BaseFloor, (base_x, WindowScreen.get_height() - BaseFloor.get_height()))
     WindowScreen.blit(BaseFloor, (base_x + WindowScreen.get_width(), WindowScreen.get_height() - BaseFloor.get_height()))
@@ -290,5 +286,6 @@ while running:
     pygame.display.update() #Updates the display
 
 pygame.quit()
+
 
  
