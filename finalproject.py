@@ -4,7 +4,6 @@
 
 #Importing pygame
 import pygame
-import time
 pygame.init()
 
 
@@ -26,6 +25,12 @@ WindowScreen = pygame.display.set_mode((480,720))
 pygame.display.set_caption("Flappy Bird")
 
 
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Music 
+
+LoadSong =  os.path.join(RootPath, 'audio' , 'Happy Bird2.mp3')
+pygame.mixer.music.load(LoadSong)
+pygame.mixer.music.play(-1)
+
 ## - - - - - - - - - - - -Assets/Images calling  - - - - - - - - - - - - - - - - - - - - -
 
 LoadImage = os.path.join(RootPath, 'assets' , 'SkyAsset.png') #SkyAsset
@@ -43,8 +48,14 @@ PipeImage = pygame.image.load(PipeImageLoad)
 BaseImageLoad = os.path.join(RootPath, 'assets', 'base.png') #Floor asset 
 BaseFloor = pygame.image.load(BaseImageLoad)
 
-CollectibleImageLoad = os.path.join(RootPath, 'assets', 'Pipe.png') #Pipe asset
+CollectibleImageLoad = os.path.join(RootPath, 'assets', 'Power.png') #power asset
 CollectibleImage = pygame.image.load(CollectibleImageLoad)
+
+CollectibleImageLoad = os.path.join(RootPath, 'assets', 'Power2.png') #power2 asset
+CollectibleImage = pygame.image.load(CollectibleImageLoad)
+
+OrangeImageLoad = os.path.join(RootPath, 'assets', 'Power.png') #power2 asset
+OrangeCollectibleImage = pygame.image.load(OrangeImageLoad)
 #- - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 
@@ -60,8 +71,8 @@ class Bird():
         self.rect = self.image.get_rect() 
         self.rect.x = 20
         self.rect.y = WindowScreen.get_height() / 2 - self.image.get_height() / 2
-        self.gravity = 0.5 
-        self.jump_strength = -8
+        self.gravity = 0.3
+        self.jump_strength = -6
         self.velocity = 0
     
     def update(self): # Updates position to apply the correct gravity and velocity on player
@@ -86,7 +97,7 @@ class Pipe():
         self.y = y
         self.width = self.image.get_width()
         self.height = self.image.get_height()
-        self.speed = 2.5
+        self.speed = 1.5
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y= y
@@ -94,14 +105,14 @@ class Pipe():
     
     def update(self):
         self.x -= self.speed
-        self.rect.x = self.x -10
+        self.rect.x = self.x 
         if self.x < -self.width:
             self.x = 450
             self.y = 500
-            self.rect.y = self.y -10
             self.image = pygame.transform.scale(PipeImage, (100 , random.randint(100,240)))
             self.width = self.image.get_width()
             self.height = self.image.get_height()
+            self.rect.y = self.y -20
 
 
 class InvertedPipe(Pipe):
@@ -110,7 +121,7 @@ class InvertedPipe(Pipe):
         self.image = pygame.transform.flip(self.image,False, True)
     def update(self):
         self.x -= self.speed
-        self.rect.x = self.x -10
+        self.rect.x = self.x 
         if self.x < -self.width:
             self.x = 450
             self.y = 0
@@ -118,26 +129,41 @@ class InvertedPipe(Pipe):
             self.width = self.image.get_width()
             self.height = self.image.get_height()
             self.rect = self.image.get_rect()
-            self.rect.y = self.y - 10 
+            self.rect.y = self.y - 20
 
 class Pickup(Pipe):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.image = CollectibleImage
         self.speed = 1
+
     def update(self):
         self.x -= self.speed
-        self.rect.x = self.x -10
+        self.rect.x = self.x 
         if self.x < -self.width:
-            self.x = 450
-            self.y = random.randint(0,300)
+            self.x = 650
+            self.y = random.randint(0,400)
             self.width = self.image.get_width()
             self.height = self.image.get_height()
             self.rect = self.image.get_rect()
-            self.rect.y = self.y - 10 
+            self.rect.y = self.y
         
         
-
+class OrangePower(Pickup):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        self.image = OrangeCollectibleImage
+        self.speed = 1
+    def update(self):
+        self.x -= self.speed
+        self.rect.x = self.x 
+        if self.x < -self.width:
+            self.x = 650
+            self.y = random.randint(0,400)
+            self.width = self.image.get_width()
+            self.height = self.image.get_height()
+            self.rect = self.image.get_rect()
+            self.rect.y = self.y
 
 def game_over():
     font = pygame.font.SysFont('Arial', 36)
@@ -151,10 +177,23 @@ def game_over():
 def check_collision(bird, pipe): 
     if bird.rect.colliderect(pipe):
         game_over()
+
 def pickup_obtained(bird,collectible,count):
     if bird.rect.colliderect(collectible):
-        count += 20
+        count += 2
         collectible.x = 450
+def speedupobtained(bird,orange,pipe, speed):
+    if bird.rect.colliderect(orange.rect):
+        speed += 5
+        orange.x = 500
+        orange.y = random.randint(-100,500)
+        print(pipe.speed)
+def update_speed(score_counter, orange_count):
+    base_speed = 2  
+    speed = base_speed + (score_counter // 10) 
+    speed += orange_count * 0.1 
+    return speed
+
         
 def speed_up(count, pipe):
     if count >= 20:
@@ -174,8 +213,8 @@ def show_text(count):
 bird = Bird() 
 pipe1 = Pipe(300, 400)
 pipe2 = InvertedPipe(300,0)
-Collectibles = Pickup(random.randint(100,300), random.randint(100,300))
-
+Collectibles = Pickup(500, random.randint(0,400))
+Orange = OrangePower(500,random.randint(-30,340))
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -192,6 +231,8 @@ base_x = 1
 #Pygame application running 
 running = True
 score_counter = 0
+orange_count = 0
+speed_value =2
 while running:  
     for event in pygame.event.get():
         if event.type == pygame.QUIT: 
@@ -205,33 +246,84 @@ while running:
     #     game_over()
     check_collision(bird, pipe1)
     check_collision(bird,pipe2)
-    base_x -= base_speed #Sets floor speed and position and moves it
-    if base_x <= -WindowScreen.get_width():
-        base_x = 0
-
-
-    if bird.x == pipe1.x: 
-            score_counter += 1 
-            print(score_counter)
-            print(f'{bird.x} + {pipe1.x}')
-    elif bird.rect.colliderect(Collectibles):
-        score_counter+= 20
-        print(score_counter)
-        
-    show_text(score_counter)
-
-    pickup_obtained(bird,Collectibles,score_counter)
-   
 
     pipe1.update()
     pipe2.update()
     Collectibles.update()
+    Orange.update()
+    
+    base_x -= base_speed #Sets floor speed and position and moves it
+    if base_x <= -WindowScreen.get_width():
+        base_x = 0
+    
+
+
+    if pipe1.x == 450:        #--- workaround
+            score_counter += 1 
+            print(score_counter)
+            print(f'{bird.x} + {pipe1.x}')
+    if bird.rect.colliderect(Collectibles):
+        score_counter+= 2
+        print(score_counter)
+    else:
+        print('nothing') #debug 
+        
+
+    print(pipe1.x)
+
+    show_text(score_counter)
+
+    pickup_obtained(bird,Collectibles,score_counter)
+    if bird.rect.colliderect(Orange):
+        orange_count += 1
+        Orange.x = 500
+        Orange.y = random.randint(-100,500)
+
+    pipe1.speed = update_speed(score_counter,orange_count)
+    pipe2.speed = pipe1.speed
+# #-------- speed up - - - - - - - - -
+#     if score_counter in range(0,20):
+#         speed_value += .0005
+#     elif score_counter in range(21,40):
+#         speed_value +=.0007
+#     elif score_counter in range(41,60):
+#         speed_value += .0008
+#     else:
+#         speed_value = speed_value
+    # if score_counter >= 0:
+    #  WindowScreen.blit(Night, (0, 0)) 
+    # if score_counter >= 5:
+    #     pipe1.speed = 3
+    #     pipe2.speed = 3
+    # if score_counter >= 10:
+    #     pipe1.speed = 4
+    #     pipe2.speed = 4
+    #     WindowScreen.blit(Night, (0, 0)) 
+    # if score_counter >= 15:
+    #     pipe1.speed = 6
+    #     pipe2.speed = 6
+    # if score_counter >= 25:
+    #     pipe1.speed = 7
+    #     pipe2.speed = 7
+    # if score_counter >= 40:
+    #     pipe1.speed = 9
+    #     pipe2.speed = 9
+    #     WindowScreen.blit(Background, (0, 0)) 
+
+
+    
+    
+
+    pipe1.update()
+    pipe2.update()
+    Collectibles.update()
+    Orange.update()
 
         
         
 
 #----- Setting Position of the background, player, and floor - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    WindowScreen.blit(Background, (0,0))
+    WindowScreen.blit(Night, (0, 0)) 
     WindowScreen.blit(bird.image, (bird.x, bird.y)) 
     WindowScreen.blit(BaseFloor, (base_x, WindowScreen.get_height() - BaseFloor.get_height()))
     WindowScreen.blit(BaseFloor, (base_x + WindowScreen.get_width(), WindowScreen.get_height() - BaseFloor.get_height()))
@@ -240,11 +332,13 @@ while running:
     WindowScreen.blit(pipe1.image, (pipe1.x, pipe1.y))
     WindowScreen.blit(pipe2.image, (pipe2.x, pipe2.y))
     WindowScreen.blit(Collectibles.image, (Collectibles.x,Collectibles.y))
+    WindowScreen.blit(Orange.image, (Orange.x,Orange.y))
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
     pygame.display.update() #Updates the display
 
 pygame.quit()
+
 
  
