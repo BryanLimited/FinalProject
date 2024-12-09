@@ -314,10 +314,7 @@ while running:
     
     
 
-    pipe1.update()
-    pipe2.update()
-    Collectibles.update()
-    Orange.update()
+
 
         
         
