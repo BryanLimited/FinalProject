@@ -25,11 +25,22 @@ WindowScreen = pygame.display.set_mode((480,720))
 pygame.display.set_caption("Flappy Bird")
 
 
-## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Music 
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Music/ sound effects - - - - - - - - - - - - - - - - -
 
 LoadSong =  os.path.join(RootPath, 'audio' , 'Happy Bird2.mp3')
-pygame.mixer.music.load(LoadSong)
+pygame.mixer.music.load(LoadSong)    
 pygame.mixer.music.play(-1)
+ 
+
+LoadBounce = os.path.join(RootPath, 'audio' , 'Jump.mp3')
+JumpSound = pygame.mixer.Sound(LoadBounce)
+
+
+
+LoadCoin = os.path.join(RootPath, 'audio' , 'Coin.mp3')
+CoinSound = pygame.mixer.Sound(LoadCoin)
+
+
 
 ## - - - - - - - - - - - -Assets/Images calling  - - - - - - - - - - - - - - - - - - - - -
 
@@ -154,6 +165,7 @@ class OrangePower(Pickup):
         super().__init__(x, y)
         self.image = OrangeCollectibleImage
         self.speed = 1
+
     def update(self):
         self.x -= self.speed
         self.rect.x = self.x 
@@ -239,11 +251,18 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN: #User inputs and what happens when you press space
             if event.key == pygame.K_SPACE:
+                JumpSound.play()
                 bird.velocity = bird.jump_strength
 
     bird.update() # Updates position of player
-    # if bird.y ==  WindowScreen.get_height() - BaseFloor.get_height() - bird.image.get_height():
-    #     game_over()
+
+
+    #if bird.y ==  WindowScreen.get_height() - BaseFloor.get_height() - bird.image.get_height(): #game over when it hits the ground 
+            #game_over()
+
+
+
+
     check_collision(bird, pipe1)
     check_collision(bird,pipe2)
 
@@ -265,22 +284,26 @@ while running:
     if bird.rect.colliderect(Collectibles):
         score_counter+= 2
         print(score_counter)
+        CoinSound.play()
     else:
-        print('nothing') #debug 
+        print('nothing') #debug   
         
 
     print(pipe1.x)
 
     show_text(score_counter)
-
+ 
     pickup_obtained(bird,Collectibles,score_counter)
+    
     if bird.rect.colliderect(Orange):
         orange_count += 1
         Orange.x = 500
         Orange.y = random.randint(-100,500)
+        CoinSound.play()
 
     pipe1.speed = update_speed(score_counter,orange_count)
     pipe2.speed = pipe1.speed
+    
 # #-------- speed up - - - - - - - - -
 #     if score_counter in range(0,20):
 #         speed_value += .0005
@@ -312,15 +335,15 @@ while running:
 
 
     
-    
+    #simple background change 
+    if score_counter in range(0,20):
+        WindowScreen.blit(Night, (0, 0)) 
+    else:
+        WindowScreen.blit(Background, (0, 0)) 
 
-
-
-        
         
 
 #----- Setting Position of the background, player, and floor - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    WindowScreen.blit(Night, (0, 0)) 
     WindowScreen.blit(bird.image, (bird.x, bird.y)) 
     WindowScreen.blit(BaseFloor, (base_x, WindowScreen.get_height() - BaseFloor.get_height()))
     WindowScreen.blit(BaseFloor, (base_x + WindowScreen.get_width(), WindowScreen.get_height() - BaseFloor.get_height()))
@@ -338,4 +361,3 @@ while running:
 pygame.quit()
 
 
- 
